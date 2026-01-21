@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa sản phẩm</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chỉnh sửa sản phẩm</h1>
+        
+        <form action="/products/update/<%= product.id %>" method="POST" class="form-edit-product">
+            <div class="form-group">
+                <label for="name">Tên sản phẩm:</label>
+                <input type="text" id="name" name="name" value="<%= product.name %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Mô tả:</label>
+                <textarea id="description" name="description" rows="5"><%= product.description %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Giá:</label>
+                <input type="number" id="price" name="price" step="0.01" value="<%= product.price %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Số lượng:</label>
+                <input type="number" id="quantity" name="quantity" value="<%= product.quantity %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Danh mục:</label>
+                <input type="text" id="category" name="category" value="<%= product.category %>">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
+                <a href="/products" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
