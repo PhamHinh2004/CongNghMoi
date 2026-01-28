@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Manager</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .price {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📱 Product Manager</h1>
+
+    <% if (products.length===0) { %>
+        <p>Chưa có sản phẩm nào</p>
+        <% } %>
+
+            <div class="products">
+                <% products.forEach(p=> { %>
+                    <div class="card">
+                        <img src="<%= p.url_image %>" alt="<%= p.name %>">
+                        <h3>
+                            <%= p.name %>
+                        </h3>
+                        <p class="price">
+                            <%= p.price.toLocaleString() %> đ
+                        </p>
+                        <p>Số lượng: <%= p.quantity %>
+                        </p>
+
+                        <a href="/edit/<%= p.id %>">✏️ Edit</a> |
+                        <a href="/delete/<%= p.id %>">❌ Delete</a>
+                    </div>
+                    <% }) %>
+            </div>
+</body>
+
+</html>

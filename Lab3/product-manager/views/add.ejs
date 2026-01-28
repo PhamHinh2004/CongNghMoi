@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Thêm sản phẩm</title>
+</head>
+
+<body>
+    <h1>Thêm sản phẩm (Điện thoại)</h1>
+
+    <form action="/add" method="POST" enctype="multipart/form-data">
+        <div>
+            <label>Tên sản phẩm</label><br>
+            <input type="text" name="name" value="iPhone 15" required>
+        </div>
+
+        <div>
+            <label>Giá</label><br>
+            <input type="number" name="price" value="25000000" required>
+        </div>
+
+        <div>
+            <label>Số lượng</label><br>
+            <input type="number" name="quantity" value="10" required>
+        </div>
+
+        <div>
+            <label>Hình ảnh</label><br>
+            <input type="file" name="image" required>
+        </div>
+
+        <br>
+        <button type="submit">Lưu sản phẩm</button>
+    </form>
+
+    <br>
+    <a href="/">⬅ Quay về danh sách</a>
+</body>
+
+</html>
