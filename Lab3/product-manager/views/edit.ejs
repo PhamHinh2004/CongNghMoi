@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 30px;
+        }
+
+        form {
+            max-width: 400px;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        img {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>✏️ Edit Product</h2>
+
+    <form action="/edit/<%= product.id %>" method="post" enctype="multipart/form-data">
+
+        <label>Tên sản phẩm</label>
+        <input type="text" name="name" value="<%= product.name %>" required>
+
+        <label>Giá</label>
+        <input type="number" name="price" value="<%= product.price %>" required>
+
+        <label>Số lượng</label>
+        <input type="number" name="quantity" value="<%= product.quantity %>" required>
+
+        <label>Ảnh hiện tại</label>
+        <img src="<%= product.url_image %>">
+
+        <input type="hidden" name="oldImage" value="<%= product.url_image %>">
+
+        <label>Đổi ảnh mới (nếu có)</label>
+        <input type="file" name="image">
+
+        <button type="submit">💾 Cập nhật</button>
+    </form>
+
+    <a href="/">⬅ Quay lại</a>
+
+</body>
+
+</html>

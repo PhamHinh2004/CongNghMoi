@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Premium Inventory System | Lab 4</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --dark-bg: #0A0A0A;
+            --card-surface: #1C1C1E;
+            --border-color: rgba(212, 175, 55, 0.15);
+        }
+        body {
+            background-color: var(--dark-bg);
+            color: #F5F5F7;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+        /* Header Section */
+        .luxury-header { padding: 40px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 40px; }
+        .gold-accent { color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; }
+
+        /* Table Design */
+        .table-container {
+            background: var(--card-surface);
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .table { --bs-table-bg: transparent; color: #E5E5E7; margin-bottom: 0; border-collapse: separate; border-spacing: 0 12px; }
+        .table thead th {
+            border: none; color: #8E8E93; font-weight: 500; text-transform: uppercase;
+            font-size: 0.7rem; padding: 10px 20px; letter-spacing: 1px;
+        }
+
+        /* Table Rows */
+        .table tbody tr {
+            background: rgba(255, 255, 255, 0.03);
+            transition: all 0.3s ease;
+        }
+        .table tbody tr:hover { background: rgba(212, 175, 55, 0.08); transform: scale(1.005); }
+        .table tbody td { border: none; padding: 20px; }
+        .table tbody td:first-child { border-radius: 12px 0 0 12px; }
+        .table tbody td:last-child { border-radius: 0 12px 12px 0; }
+
+        /* Components */
+        .product-img { width: 64px; height: 64px; object-fit: cover; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); }
+        .price-tag { color: var(--gold); font-weight: 600; font-size: 1.1rem; }
+        .stock-badge {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            border: 1px solid var(--gold); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;
+        }
+        .btn-gold { background: var(--gold); color: #000; font-weight: 600; border-radius: 12px; padding: 10px 24px; border: none; text-decoration: none; display: inline-block; }
+        .btn-edit { color: var(--gold); border: 1px solid var(--gold); border-radius: 8px; font-size: 0.8rem; padding: 6px 16px; text-decoration: none; }
+        .btn-remove { color: #FF453A; border: 1px solid #FF453A; border-radius: 8px; font-size: 0.8rem; padding: 6px 16px; background: transparent; margin-left: 8px; border-width: 1px; cursor: pointer; }
+        .btn-remove:hover { background: rgba(255, 69, 58, 0.1); }
+    </style>
+</head>
+<body>
+<div class="container pb-5">
+    <header class="luxury-header d-flex justify-content-between align-items-end">
+        <div>
+            <span class="gold-accent">Inventory Management</span>
+            <h1 class="display-6 fw-bold mt-1 mb-0">Premium Collection</h1>
+            <div class="mt-2">
+                <% if (user) { %>
+                    <span class="text-success small">● Welcome: <strong><%= user.username %></strong></span>
+                    <span class="badge bg-dark text-gold ms-2" style="border: 1px solid var(--gold); font-size: 0.6rem;">
+                        <%= user.role.toUpperCase() %>
+                    </span>
+                    <a href="/logout" class="text-muted small ms-3 text-decoration-none">Sign Out</a>
+                <% } else { %>
+                    <a href="/login" class="text-gold small text-decoration-none">Click here to Login</a>
+                <% } %>
+            </div>
+        </div>
+        <% if (user && user.role === 'admin') { %>
+            <a href="/add" class="btn btn-gold shadow-sm">ADD NEW PIECE</a>
+        <% } %>
+    </header>
+
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                <tr>
+                    <th>Preview</th>
+                    <th>Product Details</th>
+                    <th>Category</th>
+                    <th>Valuation</th>
+                    <th>Inventory Status</th>
+                    <th class="text-center">Operations</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% products.forEach(product => { %>
+                    <tr>
+                        <td>
+                            <img src="<%= product.url_image %>" class="product-img" alt="product">
+                        </td>
+                        <td>
+                            <div class="fw-bold text-white fs-5"><%= product.name %></div>
+                            <div class="text-muted small" style="font-size: 0.7rem;">ID: <%= product.id %></div>
+                        </td>
+                        <td>
+                            <span class="text-muted small"><%= product.categoryId || 'General' %></span>
+                        </td>
+                        <td>
+                            <span class="price-tag"><%= product.price.toLocaleString() %></span>
+                            <span class="small text-muted ms-1">VNĐ</span>
+                        </td>
+                        <td>
+                            <div class="mb-1"><span class="stock-badge"><%= product.quantity %> Units</span></div>
+                            <% if (product.inventoryStatus === 'Hết hàng') { %>
+                                <span class="badge bg-danger" style="font-size: 0.65rem;">OUT OF STOCK</span>
+                            <% } else if (product.inventoryStatus === 'Sắp hết hàng') { %>
+                                <span class="badge bg-warning text-dark" style="font-size: 0.65rem;">LOW STOCK</span>
+                            <% } else { %>
+                                <span class="badge bg-success" style="font-size: 0.65rem;">AVAILABLE</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <% if (user && user.role === 'admin') { %>
+                                    <a href="/edit/<%= product.id %>" class="btn btn-edit me-2">EDIT</a>
+                                    <form action="/delete/<%= product.id %>" method="POST" onsubmit="return confirm('Archive this masterpiece?')">
+                                        <button type="submit" class="btn btn-remove">REMOVE</button>
+                                    </form>
+                                <% } else { %>
+                                    <span class="text-muted small"><em>Read Only</em></span>
+                                <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
